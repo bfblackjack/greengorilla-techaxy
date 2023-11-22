@@ -3,27 +3,23 @@
 namespace App\Notifications;
 
 use App\Models\User;
-use App\Models\UserInvite;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 
-class NewUserInvited extends Notification
+class UserConfirmed extends Notification
 {
     use Queueable;
 
     public User $user;
-    public UserInvite $userInvite;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(User $user, UserInvite $userInvite)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->userInvite = $userInvite;
     }
 
     /**
@@ -43,10 +39,10 @@ class NewUserInvited extends Notification
     {
         return (new MailMessage)
                     ->line($this->user->first . ', ')
-                    ->line('You have been invited to join the '.config('app.name') . ' Portal.')
-                    ->line('Setup your account using the link below. It\'ll be active for the next 24 hours.')
-                    ->action('Create Account', URL::temporarySignedRoute('account-setup', $this->userInvite->expire_dt, ['invite' => $this->userInvite->id]))
-                    ->line('If you need a new link, \' you may need to contact an administrator.');
+                    ->line('Your account has been confirmed!')
+                    ->line('All information needed can be found directly in your portal. You\'ll be able to setup webhooks to send/receive data directly in your dashboard.')
+                    ->action('Login Now', route('login'))
+                    ->line('Thanks!');
     }
 
     /**

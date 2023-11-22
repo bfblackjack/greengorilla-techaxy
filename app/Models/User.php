@@ -13,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
@@ -32,13 +33,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @property Collection|Buyer[] $buyers
+ * @property Buyer $buyer
  * @property Collection|ContactLog[] $contact_logs
- * @property Collection|Publisher[] $publishers
+ * @property Publisher $publisher
  *
  * @package App\Models
  */
-class User extends Model
+class User extends Authenticatable
 {
     use HasRoles, HasPermissions, HasApiTokens, Notifiable;
 
@@ -70,9 +71,9 @@ class User extends Model
 		'profile_photo_path'
 	];
 
-	public function buyers()
+	public function buyer()
 	{
-		return $this->hasMany(Buyer::class);
+		return $this->hasOne(Buyer::class);
 	}
 
 	public function contact_logs()
@@ -80,8 +81,8 @@ class User extends Model
 		return $this->hasMany(ContactLog::class, 'author_id');
 	}
 
-	public function publishers()
+	public function publisher()
 	{
-		return $this->hasMany(Publisher::class);
+		return $this->hasOne(Publisher::class);
 	}
 }

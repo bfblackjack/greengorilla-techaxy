@@ -4,6 +4,7 @@
             <slot name="logo" />
         </div>
 
+        <AuthenticationCardLogo />
         <div class="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white shadow-sm overflow-hidden sm:rounded-lg">
             <slot />
         </div>
@@ -11,8 +12,11 @@
 </template>
 
 <script>
+import AuthenticationCardLogo from "@/Components/AuthenticationCardLogo.vue";
+
 export default {
-    name: "GuestLayout"
+    name: "GuestLayout",
+    components: {AuthenticationCardLogo}
 }
 </script>
 

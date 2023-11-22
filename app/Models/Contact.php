@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Contact
- * 
+ *
  * @property int $id
  * @property string $internal_id
  * @property string|null $external_id
@@ -21,10 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
- * @property Collection|Buyer[] $buyers
+ *
+ * @property Buyer $buyer
  * @property Collection|ContactLog[] $contact_logs
- * @property Collection|Publisher[] $publishers
+ * @property Publisher $publisher
  *
  * @package App\Models
  */
@@ -44,11 +44,9 @@ class Contact extends Model
 		'status'
 	];
 
-	public function buyers()
+	public function buyer()
 	{
-		return $this->belongsToMany(Buyer::class, 'buyer_contacts')
-					->withPivot('id')
-					->withTimestamps();
+		return $this->belongsTo(BuyerContact::class, 'id', 'contact_id');
 	}
 
 	public function contact_logs()
@@ -56,10 +54,8 @@ class Contact extends Model
 		return $this->hasMany(ContactLog::class);
 	}
 
-	public function publishers()
+	public function publisher()
 	{
-		return $this->belongsToMany(Publisher::class, 'publisher_contacts')
-					->withPivot('id')
-					->withTimestamps();
+		return $this->belongsTo(PublisherContact::class, 'id', 'contact_id');
 	}
 }
